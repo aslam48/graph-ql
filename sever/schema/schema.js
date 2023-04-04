@@ -12,11 +12,19 @@ const {
 
 //create type 
 let userData = [
-    {id:"1", name: "Bond", age: 36},
-    {id:"13", name: "Anna", age: 36},
-    {id:"211", name: "Bella", age: 36},
-    {id:"19", name: "Gina", age: 36},
-    {id:"150", name: "Geogina", age: 36},
+    {id:"1", name: "Bond", age: 36, professtion: "grate"},
+    {id:"13", name: "Anna", age: 36, professtion: "nice"},
+    {id:"211", name: "Bella", age: 36,professtion: "cool"},
+    {id:"19", name: "Gina", age: 36,professtion: "good"},
+    {id:"150", name: "Geogina", age: 36, professtion: "football"},
+];
+
+let HobbieData = [
+    {id:"1", title: "programming", age: 36, hobby: "using computer to make money"},
+    {id:"13", title: "coding", age: 36, hobby: "doing what he loves"},
+    {id:"211", title: "sleeping", age: 36,hobby: "sleeping all day"},
+    {id:"19", title: "cuddeling", age: 36,hobby: "having sex"},
+    {id:"150", title: "driving", age: 36, hobby: "loves cars driving cars"},
 ];
 
 const UserType = new GraphQLObjectType({
@@ -25,7 +33,20 @@ const UserType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        age: {type: GraphQLInt}
+        age: {type: GraphQLInt},
+        professtion : {type: GraphQLString}
+    })
+})
+
+const HobbyType = new GraphQLObjectType({
+
+    name: "Hobby",
+    description: "Hobby description",
+    fields: () => ({
+        id: {type: GraphQLID},
+        title: {type: GraphQLString},
+        age: {type: GraphQLInt},
+        hobby: {type: Grap}
     })
 })
 
@@ -42,13 +63,28 @@ const RootQuery = new GraphQLObjectType({
 
             resolve(parent, args) {
                
-                return 
+                return _.find(userData, {id: args.id})
                 //we resolve with data
                 //get and return data from datascouce
+            }
+        },
+
+        // hobby query 
+        hobby: {
+            type: HobbyType,
+            args: {id: {type: GraphQLID}},
+
+            resolve(parent, args){
+                return _.find(HobbieData, {id: args.id})
+
+                //return data for our body 
             }
         }
     }
 });
+
+
+
 
 module.exports  = new GraphQLSchema({
     query: RootQuery

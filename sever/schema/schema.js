@@ -20,19 +20,19 @@ let userData = [
 ];
 
 let HobbieData = [
-    {id:"1", title: "programming", age: 36, hobby: "using computer to make money"},
-    {id:"13", title: "coding", age: 36, hobby: "doing what he loves"},
-    {id:"211", title: "sleeping", age: 36,hobby: "sleeping all day"},
-    {id:"19", title: "cuddeling", age: 36,hobby: "having sex"},
-    {id:"150", title: "driving", age: 36, hobby: "loves cars driving cars"},
+    {id:"1", title: "programming", age: 36, hobby: "using computer to make money", userId:"150"},
+    {id:"2", title: "coding", age: 36, hobby: "doing what he loves", userId:"211"},
+    {id:"3", title: "sleeping", age: 36,hobby: "sleeping all day", userId:"211"},
+    {id:"4", title: "cuddeling", age: 36,hobby: "having sex", userId:"13"},
+    {id:"5", title: "driving", age: 36, hobby: "loves cars driving cars", userId:"150"},
 ];
 
 let PostData = [
-    {id:"1", comment:"using computer to make money"},
-    {id:"13", comment:"doing what he loves"},
-    {id:"211", comment: "sleeping all day"},
-    {id:"19", comment:"having sex"},
-    {id:"150", comment:"loves cars driving cars"},
+    {id:"1", comment:"using computer to make money", userId:"1"},
+    {id:"2", comment:"doing what he loves", userId:"1"},
+    {id:"3", comment: "sleeping all day", userId:"19"},
+    {id:"4", comment:"having sex", userId:"211"},
+    {id:"5", comment:"loves cars driving cars", userId:"150"},
 ];
 
 const UserType = new GraphQLObjectType({
@@ -54,7 +54,14 @@ const HobbyType = new GraphQLObjectType({
         id: {type: GraphQLID},
         title: {type: GraphQLString},
         age: {type: GraphQLInt},
-        hobby: {type: GraphQLString}
+        hobby: {type: GraphQLString},
+
+        user: {
+            type: UserType,
+            resolve(parent, args){
+                return _.find(userData, {id: parent.userId})
+            }
+        }
     })
 })
 
@@ -63,7 +70,14 @@ const PostType = new GraphQLObjectType({
     description: "Users post",
     fields: () => ({
         id: {type: GraphQLID},
-        comment: {type: GraphQLString}
+        comment: {type: GraphQLString},
+
+        user: {
+            type: UserType,
+            resolve(parent, args){
+                return _.find(userData, {id:parent.userId})
+            }
+        }
        
     })
 })
@@ -81,7 +95,7 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLString}},
 
             resolve(parent, args) {
-               
+             
                 return _.find(userData, {id: args.id})
                 //we resolve with data
                 //get and return data from datascouce

@@ -162,7 +162,29 @@ const Mutation = new GraphQLObjectType({
               }  
               return user
             }
+    },
+
+
+    // create post mutation
+
+    createPost : {
+        type: PostType,
+        args: {
+            comment: {type: GraphQLString},
+            userId: {type: GraphQLID},
+           
+        },
+        resolve(parent, args) {
+          let post = {
+            comment: args.comment,
+            userId: args.userId
+          }  
+          return post 
+        }
     }
+
+    //create hobbie mutation
+    
 }
 });
 

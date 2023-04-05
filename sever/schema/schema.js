@@ -164,8 +164,8 @@ const Mutation = new GraphQLObjectType({
             }
     },
 
-
     // create post mutation
+
 
     createPost : {
         type: PostType,
@@ -181,10 +181,28 @@ const Mutation = new GraphQLObjectType({
           }  
           return post 
         }
-    }
+    },
+
 
     //create hobbie mutation
-    
+    createHobby : {
+        type: HobbyType,
+        args: {
+            title: {type: GraphQLString},         
+            description: {type: GraphQLString},
+            userId: {type: GraphQLID},
+        },
+
+        resolve(parent, args) {
+          let hobby = {
+            title: args.title,
+            description: args.description,
+            userId: args.userId
+          }  
+          return hobby 
+        }
+    }
+
 }
 });
 
